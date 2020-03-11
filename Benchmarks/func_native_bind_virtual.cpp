@@ -1,10 +1,8 @@
 #include <iostream>
 #include <sstream>
-#include <chrono>
 #include <functional>
 #include <iomanip>
-
-#include "utility/utility.h"
+#include <chrono>
 
 #ifdef _DEBUG
 const char * build_info = "DEBUG";
@@ -39,75 +37,75 @@ struct T : public B
     }
 };
 
-size_t test_non_virtual_function()
+std::chrono::nanoseconds test_non_virtual_function()
 {
-    auto time_start = now();
+    auto time_start = std::chrono::steady_clock::now();
     T t;
     for (size_t i = 0; i < loop_count; ++i)
         t.do_something_by_non_virtual_function();
-    return duration_in_ms(time_start, now());
+    return std::chrono::steady_clock::now() - time_start;
 }
 
-size_t test_virtual_funciton_call_by_self()
+std::chrono::nanoseconds test_virtual_funciton_call_by_self()
 {
-    auto time_start = now();
+    auto time_start = std::chrono::steady_clock::now();
     T t;
     for (size_t i = 0; i < loop_count; ++i)
         t.do_someting();
-    return duration_in_ms(time_start, now());
+    return std::chrono::steady_clock::now() - time_start;
 }
 
-size_t test_virtual_funciton_call_by_base_class()
+std::chrono::nanoseconds test_virtual_funciton_call_by_base_class()
 {
-    auto time_start = now();
+    auto time_start = std::chrono::steady_clock::now();
     B * t = new T();
     for (size_t i = 0; i < loop_count; ++i)
     {
         t->do_someting();
     }
-    return duration_in_ms(time_start, now());
+    return std::chrono::steady_clock::now() - time_start;
 }
 
-size_t test_bind_outside_loop()
+std::chrono::nanoseconds test_bind_outside_loop()
 {
-    auto time_start = now();
+    auto time_start = std::chrono::steady_clock::now();
     T t;
     std::function<void()> func = std::bind(&T::do_someting, &t);
     for (size_t i = 0; i < loop_count; ++i)
     {
         func();
     }
-    return duration_in_ms(time_start, now());
+    return std::chrono::steady_clock::now() - time_start;
 }
 
-size_t test_bind_inside_loop()
+std::chrono::nanoseconds test_bind_inside_loop()
 {
-    auto time_start = now();
+    auto time_start = std::chrono::steady_clock::now();
     T t;
     for (size_t i = 0; i < loop_count; ++i)
     {
         std::function<void()> func = std::bind(&T::do_someting, &t);
         func();
     }
-    return duration_in_ms(time_start, now());
+    return std::chrono::steady_clock::now() - time_start;
 }
 
 int main()
 {
     std::cout << "test_non_virtual_function" << std::endl;
-    size_t dur_non_virtual_function = test_non_virtual_function();
+    size_t dur_non_virtual_function = std::chrono::duration_cast<std::chrono::milliseconds>(test_non_virtual_function()).count();
 
     std::cout << "test_virtual_funciton_call_by_self" << std::endl;
-    size_t dur_virtual_funciton_call_by_self = test_virtual_funciton_call_by_self();
+    size_t dur_virtual_funciton_call_by_self = std::chrono::duration_cast<std::chrono::milliseconds>(test_virtual_funciton_call_by_self()).count();
 
     std::cout << "test_virtual_funciton_call_by_base_class" << std::endl;
-    size_t dur_virtual_funciton_call_by_base_class = test_virtual_funciton_call_by_base_class();
+    size_t dur_virtual_funciton_call_by_base_class = std::chrono::duration_cast<std::chrono::milliseconds>(test_virtual_funciton_call_by_base_class()).count();
 
     std::cout << "test_bind_outside_loop" << std::endl;
-    size_t dur_bind_outside_loop = test_bind_outside_loop();
+    size_t dur_bind_outside_loop = std::chrono::duration_cast<std::chrono::milliseconds>(test_bind_outside_loop()).count();
 
     std::cout << "test_bind_inside_loop" << std::endl;
-    size_t dur_bind_inside_loop = test_bind_inside_loop();
+    size_t dur_bind_inside_loop = std::chrono::duration_cast<std::chrono::milliseconds>(test_bind_inside_loop()).count();
 
     constexpr size_t title_width = 40;
     constexpr size_t value_width = 8;

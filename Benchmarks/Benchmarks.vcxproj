@@ -10,6 +10,9 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="memory_pool_vs_native.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{079F69DB-EA4A-4BD2-827D-D24355C446DE}</ProjectGuid>
@@ -45,9 +48,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(USERPROFILE)\Dev\lib\dist\boost_1_72_0\VS2019\x64\include\boost-1_72;$(IncludePath)</IncludePath>
+    <LibraryPath>$(USERPROFILE)\Dev\lib\dist\boost_1_72_0\VS2019\x64\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(USERPROFILE)\Dev\lib\dist\boost_1_72_0\VS2019\x64\include\boost-1_72;$(IncludePath)</IncludePath>
+    <LibraryPath>$(USERPROFILE)\Dev\lib\dist\boost_1_72_0\VS2019\x64\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -81,12 +88,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="cpp_bind_virtual.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="utility\utility.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
